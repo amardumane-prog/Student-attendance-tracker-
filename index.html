@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Student Attendance Tracker 3rd Sem</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #f6f7fb;
+    color: #20243a;
+    font-family: Arial, sans-serif;
+    padding-bottom: 80px;
+}
+
+/* TOP BAR */
+
+.topbar {
+    height: 68px;
+    background: white;
+    border-bottom: 1px solid #e7e9f2;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 6%;
+
+    position: sticky;
+    top: 0;
+    z-index: 5;
+}
+
+.brand {
+    font-weight: 800;
+    font-size: 19px;
+    color: #5b3cc4;
+}
+
+.semester {
+    color: #70758a;
+    font-size: 14px;
+}
+
+/* MAIN */
+
+.container {
+    width: min(1100px, 92%);
+    margin: 28px auto;
+}
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+/* HERO */
+
+.hero {
+    background: linear-gradient(135deg, #5b3cc4, #7b5fe0);
+    color: white;
+
+    border-radius: 24px;
+    padding: 34px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 20px;
+}
+
+.hero h1 {
+    margin: 5px 0;
+    font-size: 32px;
+}
+
+.hero p {
+    opacity: .9;
+}
+
+.eyebrow {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+
+    color: #7a62d5;
+    margin: 0;
+}
+
+.hero .eyebrow {
+    color: #ddd5ff;
+}
+
+/* BUTTONS */
+
+button {
+    border: 0;
+    padding: 11px 16px;
+
+    border-radius: 8px;
+
+    background: #ececf5;
+    color: #333;
+
+    font-weight: 700;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: .9;
+}
+
+.primary {
+    background: #5b3cc4 !important;
+    color: white !important;
+}
+
+.hero .primary {
+    background: white !important;
+    color: #5b3cc4 !important;
+}
+
+/* STAT CARDS */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 15px;
+
+    margin: 20px 0;
+}
+
+.stat,
+.panel,
+.actions button {
+    background: white;
+
+    border: 1px solid #e7e9f2;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 5px 18px rgba(37,31,72,.05);
+}
+
+.stat {
+    padding: 20px;
+}
+
+.stat span {
+    display: block;
+
+    color: #7a7f92;
+
+    font-size: 13px;
+
+    margin-bottom: 8px;
+}
+
+.stat b {
+    font-size: 28px;
+}
+
+/* PANEL */
+
+.panel {
+    padding: 24px;
+
+    margin: 18px 0;
+}
+
+.panel-title {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 15px;
+}
+
+.panel-title h2 {
+    margin: 0 0 12px;
+}
+
+/* PAGE HEADER */
+
+.page-head {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+}
+
+.page-head h1 {
+    margin: 4px 0;
+
+    font-size: 32px;
+}
+
+/* PROGRESS */
+
+.progress {
+    height: 12px;
+
+    background: #ececf5;
+
+    border-radius: 20px;
+
+    overflow: hidden;
+}
+
+.progress div {
+    height: 100%;
+
+    width: 0%;
+
+    background: #6c4bdc;
+
+    border-radius: 20px;
+
+    transition: .3s;
+}
+
+/* ACTIONS */
+
+.actions {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 15px;
+}
+
+.actions button {
+    padding: 18px;
+
+    border: 0;
+
+    cursor: pointer;
+
+    font-weight: 700;
+
+    color: #333;
+}
+
+/* FORMS */
+
+form {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+input {
+    padding: 11px 13px;
+
+    border: 1px solid #d8dbe6;
+
+    border-radius: 8px;
+
+    outline: none;
+}
+
+input:focus {
+    border-color: #7658d7;
+}
+
+/* TABLE */
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 13px;
+
+    border-bottom:
+        1px solid #eceef5;
+
+    text-align: left;
+
+    white-space: nowrap;
+}
+
+th {
+    font-size: 13px;
+
+    color: #74798c;
+
+    background: #fafaff;
+}
+
+/* ATTENDANCE COLORS */
+
+.good {
+    color: #15803d;
+
+    font-weight: 800;
+}
+
+.warning {
+    color: #b45309;
+
+    font-weight: 800;
+}
+
+.danger {
+    color: #dc2626;
+
+    font-weight: 800;
+}
+
+/* DELETE */
+
+.delete {
+    background: #fee2e2;
+
+    color: #b91c1c;
+}
+
+/* MESSAGE */
+
+.message {
+    font-weight: 700;
+}
+
+.success {
+    color: #15803d;
+}
+
+.error {
+    color: #dc2626;
+}
+
+/* BOTTOM NAVIGATION */
+
+.bottom-nav {
+    position: fixed;
+
+    bottom: 0;
+
+    left: 0;
+    right: 0;
+
+    height: 68px;
+
+    background: white;
+
+    border-top:
+        1px solid #e7e9f2;
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    z-index: 10;
+}
+
+.bottom-nav button {
+    background: transparent;
+
+    min-width: 90px;
+
+    color: #5b3cc4;
+}
+
+.bottom-nav span {
+    display: block;
+
+    font-size: 11px;
+
+    margin-top: 3px;
+}
+
+/* MOBILE */
+
+@media(max-width:750px) {
+
+    .hero {
+        display: block;
+    }
+
+    .hero .primary {
+        margin-top: 15px;
+    }
+
+    .stats {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .actions {
+        grid-template-columns:
+            1fr;
+    }
+
+    .topbar {
+        padding: 0 4%;
+    }
+
+    .hero h1,
+    .page-head h1 {
+        font-size: 26px;
+    }
+}
+
+@media(max-width:480px) {
+
+    .stats {
+        grid-template-columns:
+            1fr;
+    }
+
+    .panel-title,
+    .page-head {
+        display: block;
+    }
+
+    .panel-title input {
+        width: 100%;
+
+        margin-top: 8px;
+    }
+
+    .bottom-nav button {
+        min-width: 70px;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- TOP BAR -->
+
+<div class="topbar">
+
+    <div class="brand">
+        📘 Student Attendance
+    </div>
+
+    <div class="semester">
+        3rd Sem • CSE
+    </div>
+
+</div>
+
+
+<main class="container">
+
+
+<!-- ================= DASHBOARD ================= -->
+
+<section
+    id="dashboard"
+    class="page active"
+>
+
+    <div class="hero">
+
+        <div>
+
+            <p class="eyebrow">
+                ATTENDANCE MANAGER
+            </p>
+
+            <h1>
+                Student Attendance Tracker
+            </h1>
+
+            <p>
+                Simple attendance management
+                for your 3rd semester class.
+            </p>
+
+        </div>
+
+        <button
+            class="primary"
+            onclick="showPage('mark')"
+        >
+            ＋ Mark Attendance
+        </button>
+
+    </div>
+
+
+    <div class="stats">
+
+        <div class="stat">
+
+            <span>
+                Students
+            </span>
+
+            <b id="totalStudents">
+                0
+            </b>
+
+        </div>
+
+
+        <div class="stat">
+
+            <span>
+                Present Today
+            </span>
+
+            <b id="presentToday">
+                0
+            </b>
+
+        </div>
+
+
+        <div class="stat">
+
+            <span>
+                Absent Today
+            </span>
+
+            <b id="absentToday">
+                0
+            </b>
+
+        </div>
+
+
+        <div class="stat">
+
+            <span>
+                Today's Rate
+            </span>
+
+            <b id="todayRate">
+                0%
+            </b>
+
+        </div>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="panel-title">
+
+            <h2>
+                Quick Overview
+            </h2>
+
+            <span id="todayText"></span>
+
+        </div>
+
+
+        <div class="progress">
+
+            <div id="todayBar"></div>
+
+        </div>
+
+
+        <p id="overviewText">
+            No attendance marked today.
+        </p>
+
+    </div>
+
+
+    <div class="actions">
+
+        <button
+            onclick="showPage('students')"
+        >
+            👥 Student List
+        </button>
+
+        <button
+            onclick="showPage('mark')"
+        >
+            ✓ Mark Attendance
+        </button>
+
+        <button
+            onclick="showPage('records')"
+        >
+            📋 Attendance Records
+        </button>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= STUDENTS ================= -->
+
+<section
+    id="students"
+    class="page"
+>
+
+    <div class="page-head">
+
+        <div>
+
+            <p class="eyebrow">
+                CLASS ROSTER
+            </p>
+
+            <h1>
+                Students
+            </h1>
+
+        </div>
+
+        <button
+            class="primary"
+            onclick="document.getElementById('studentName').focus()"
+        >
+            ＋ Add Student
+        </button>
+
+    </div>
+
+
+    <div class="panel">
+
+        <form
+            id="studentForm"
+        >
+
+            <input
+                id="studentName"
+                placeholder="Student name"
+                required
+            >
+
+            <input
+                id="rollNumber"
+                placeholder="Roll number"
+                required
+            >
+
+            <button
+                class="primary"
+                type="submit"
+            >
+                Save Student
+            </button>
+
+        </form>
+
+
+        <p
+            id="studentMessage"
+            class="message"
+        ></p>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="panel-title">
+
+            <h2>
+                Saved Students
+            </h2>
+
+            <input
+                id="search"
+                placeholder="Search student..."
+                oninput="renderStudents()"
+            >
+
+        </div>
+
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Roll No.
+                        </th>
+
+                        <th>
+                            Student Name
+                        </th>
+
+                        <th>
+                            Total
+                        </th>
+
+                        <th>
+                            Present
+                        </th>
+
+                        <th>
+                            Absent
+                        </th>
+
+                        <th>
+                            Attendance
+                        </th>
+
+                        <th>
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="studentTable"
+                >
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= MARK ATTENDANCE ================= -->
+
+<section
+    id="mark"
+    class="page"
+>
+
+    <div class="page-head">
+
+        <div>
+
+            <p class="eyebrow">
+                DAILY RECORD
+            </p>
+
+            <h1>
+                Mark Attendance
+            </h1>
+
+        </div>
+
+        <button
+            onclick="showPage('records')"
+        >
+            View Records
+        </button>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="filters">
+
+            <label>
+
+                Date
+
+                <input
+                    type="date"
+                    id="attDate"
+                >
+
+            </label>
+
+
+            <label>
+
+                Class / Subject Name
+
+                <input
+                    id="className"
+                    placeholder="e.g. Data Structures"
+                >
+
+            </label>
+
+        </div>
+
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Roll No.
+                        </th>
+
+                        <th>
+                            Student
+                        </th>
+
+                        <th>
+                            Present
+                        </th>
+
+                        <th>
+                            Absent
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="markTable"
+                >
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <button
+            class="primary"
+            onclick="saveAttendance()"
+        >
+            Save Attendance
+        </button>
+
+
+        <p
+            id="attendanceMessage"
+            class="message"
+        ></p>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= RECORDS ================= -->
+
+<section
+    id="records"
+    class="page"
+>
+
+    <div class="page-head">
+
+        <div>
+
+            <p class="eyebrow">
+                ATTENDANCE HISTORY
+            </p>
+
+            <h1>
+                Attendance Records
+            </h1>
+
+        </div>
+
+
+        <button
+            onclick="exportCSV()"
+        >
+            Export CSV
+        </button>
+
+    </div>
+
+
+    <div class="panel">
+
+        <div class="panel-title">
+
+            <h2>
+                Students Attendance List
+            </h2>
+
+            <input
+                id="recordSearch"
+                placeholder="Search student..."
+                oninput="renderRecords()"
+            >
+
+        </div>
+
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Roll No.
+                        </th>
+
+                        <th>
+                            Student
+                        </th>
+
+                        <th>
+                            Total Classes
+                        </th>
+
+                        <th>
+                            Present
+                        </th>
+
+                        <th>
+                            Absent
+                        </th>
+
+                        <th>
+                            Attendance %
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody
+                    id="recordTable"
+                >
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+
+<!-- BOTTOM NAVIGATION -->
+
+<nav class="bottom-nav">
+
+    <button
+        onclick="showPage('dashboard')"
+    >
+
+        ⌂
+
+        <span>
+            Home
+        </span>
+
+    </button>
+
+
+    <button
+        onclick="showPage('students')"
+    >
+
+        👥
+
+        <span>
+            Students
+        </span>
+
+    </button>
+
+
+    <button
+        onclick="showPage('mark')"
+    >
+
+        ✓
+
+        <span>
+            Mark
+        </span>
+
+    </button>
+
+
+    <button
+        onclick="showPage('records')"
+    >
+
+        ☷
+
+        <span>
+            Records
+        </span>
+
+    </button>
+
+</nav>
+
+
+
+<script>
+
+/* =========================================
+   STUDENT ATTENDANCE TRACKER
+   ========================================= */
+
+
+/* STORAGE */
+
+const STUDENTS_KEY =
+    "student_attendance_3rd_sem_students";
+
+const RECORDS_KEY =
+    "student_attendance_3rd_sem_records";
+
+
+/* LOAD DATA */
+
+let students =
+    readData(STUDENTS_KEY);
+
+let records =
+    readData(RECORDS_KEY);
+
+
+/* READ LOCAL STORAGE */
+
+function readData(key) {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(key) || "[]"
+        );
+
+    } catch(error) {
+
+        return [];
+
+    }
+
+}
+
+
+/* SAVE DATA */
+
+function saveData() {
+
+    localStorage.setItem(
+        STUDENTS_KEY,
+        JSON.stringify(students)
+    );
+
+    localStorage.setItem(
+        RECORDS_KEY,
+        JSON.stringify(records)
+    );
+
+}
+
+
+/* CREATE UNIQUE ID */
+
+function createID() {
+
+    if (
+        window.crypto &&
+        crypto.randomUUID
+    ) {
+
+        return crypto.randomUUID();
+
+    }
+
+    return Date.now() +
+        "_" +
+        Math.random();
+
+}
+
+
+/* TODAY */
+
+function getToday() {
+
+    return new Date()
+        .toISOString()
+        .slice(0,10);
+
+}
+
+
+/* ESCAPE HTML */
+
+function escapeHTML(value) {
+
+    return String(
+        value ?? ""
+    ).replace(
+        /[&<>"']/g,
+        function(character) {
+
+            return {
+
+                "&":"&amp;",
+                "<":"&lt;",
+                ">":"&gt;",
+                '"':"&quot;",
+                "'":"&#039;"
+
+            }[character];
+
+        }
+    );
+
+}
+
+
+/* SET DEFAULT DATE */
+
+document.getElementById(
+    "attDate"
+).value = getToday();
+
+
+/* TODAY TEXT */
+
+document.getElementById(
+    "todayText"
+).textContent =
+    new Date().toLocaleDateString();
+
+
+
+/* =========================================
+   PAGE NAVIGATION
+   ========================================= */
+
+function showPage(pageName) {
+
+    document
+        .querySelectorAll(".page")
+        .forEach(function(page) {
+
+            page.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    document
+        .getElementById(pageName)
+        .classList.add("active");
+
+
+    updateEverything();
+
+
+    window.scrollTo(
+        0,
+        0
+    );
+
+}
+
+
+
+/* =========================================
+   ADD STUDENT
+   ========================================= */
+
+document
+    .getElementById("studentForm")
+    .addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+
+            const name =
+                document
+                .getElementById(
+                    "studentName"
+                )
+                .value
+                .trim();
+
+
+            const roll =
+                document
+                .getElementById(
+                    "rollNumber"
+                )
+                .value
+                .trim();
+
+
+            /* CHECK DUPLICATE */
+
+            const exists =
+                students.some(
+                    function(student) {
+
+                        return student.roll
+                            .toLowerCase()
+                            ===
+                            roll.toLowerCase();
+
+                    }
+                );
+
+
+            if(exists) {
+
+                showMessage(
+                    "studentMessage",
+                    "This roll number already exists.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            /* CREATE STUDENT */
+
+            students.push({
+
+                id:createID(),
+
+                name:name,
+
+                roll:roll
+
+            });
+
+
+            /* SAVE */
+
+            saveData();
+
+
+            /* CLEAR FORM */
+
+            this.reset();
+
+
+            /* MESSAGE */
+
+            showMessage(
+                "studentMessage",
+                "Student saved successfully.",
+                "success"
+            );
+
+
+            /* UPDATE PAGE */
+
+            updateEverything();
+
+        }
+    );
+
+
+
+/* =========================================
+   MESSAGE
+   ========================================= */
+
+function showMessage(
+    elementID,
+    text,
+    className
+) {
+
+    const element =
+        document.getElementById(
+            elementID
+        );
+
+
+    element.textContent =
+        text;
+
+
+    element.className =
+        "message " +
+        className;
+
+
+    setTimeout(
+        function() {
+
+            element.textContent =
+                "";
+
+        },
+        3000
+    );
+
+}
+
+
+
+/* =========================================
+   ATTENDANCE STATISTICS
+   ========================================= */
+
+function getStudentStats(
+    student
+) {
+
+    const studentRecords =
+        records.filter(
+            function(record) {
+
+                return record.studentId
+                    === student.id;
+
+            }
+        );
+
+
+    const total =
+        studentRecords.length;
+
+
+    const present =
+        studentRecords.filter(
+            function(record) {
+
+                return record.status
+                    === "Present";
+
+            }
+        ).length;
+
+
+    const absent =
+        total - present;
+
+
+    const percentage =
+        total > 0
+        ?
+        Math.round(
+            present /
+            total *
+            10000
+        ) / 100
+        :
+        0;
+
+
+    return {
+
+        total:total,
+
+        present:present,
+
+        absent:absent,
+
+        percentage:percentage
+
+    };
+
+}
+
+
+
+/* =========================================
+   STUDENT LIST
+   ========================================= */
+
+function renderStudents() {
+
+    const search =
+        (
+            document
+            .getElementById(
+                "search"
+            )
+            .value
+            ||
+            ""
+        ).toLowerCase();
+
+
+    const filteredStudents =
+        students.filter(
+            function(student) {
+
+                return (
+                    student.name +
+                    " "
