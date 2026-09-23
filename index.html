@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Student Attendance Tracker | Sharnbasva University</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: #eef4fb;
+    color: #173b70;
+}
+
+/* ================================
+   UNIVERSITY HEADER
+================================ */
+
+.university-header {
+    width: 100%;
+    background: #ffffff;
+    padding: 10px 20px;
+    border-bottom: 5px solid #1555a6;
+}
+
+.logo-box {
+    width: 100%;
+    max-width: 1450px;
+    height: 145px;
+    margin: auto;
+
+    background: #ffffff;
+    border-radius: 8px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+}
+
+.logo-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+
+    /* Makes the logo white */
+    filter: brightness(0) invert(1);
+}
+
+/* ================================
+   TITLE
+================================ */
+
+.title-section {
+    background: linear-gradient(135deg, #0d47a1, #1976d2);
+    color: white;
+
+    text-align: center;
+    padding: 25px 15px;
+}
+
+.title-section h1 {
+    font-size: 34px;
+    margin-bottom: 8px;
+}
+
+.title-section h2 {
+    font-size: 22px;
+    font-weight: normal;
+}
+
+.title-section p {
+    font-size: 17px;
+    margin-top: 8px;
+}
+
+/* ================================
+   MAIN CONTAINER
+================================ */
+
+.container {
+    width: 95%;
+    max-width: 1450px;
+    margin: 25px auto;
+}
+
+/* ================================
+   ADD STUDENT
+================================ */
+
+.add-section {
+    background: white;
+    padding: 22px;
+    border-radius: 12px;
+
+    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+
+    margin-bottom: 20px;
+}
+
+.add-section h2 {
+    margin-bottom: 15px;
+    color: #124b91;
+}
+
+.form-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.form-row input {
+    flex: 1;
+
+    min-width: 220px;
+
+    padding: 13px;
+
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+
+    font-size: 15px;
+
+    outline: none;
+}
+
+.form-row input:focus {
+    border-color: #1976d2;
+}
+
+/* ================================
+   BUTTONS
+================================ */
+
+button {
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 12px 18px;
+
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.add-btn {
+    background: #1261c9;
+    color: white;
+}
+
+.add-btn:hover {
+    background: #084a9e;
+}
+
+.present-btn {
+    background: #16a34a;
+    color: white;
+}
+
+.absent-btn {
+    background: #dc2626;
+    color: white;
+}
+
+.reset-btn {
+    background: #dc2626;
+    color: white;
+}
+
+.mark-all-btn {
+    background: #16a34a;
+    color: white;
+}
+
+/* ================================
+   ATTENDANCE CONTROL
+================================ */
+
+.attendance-control {
+    background: white;
+
+    padding: 20px;
+
+    border-radius: 12px;
+
+    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+
+    margin-bottom: 20px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 15px;
+
+    flex-wrap: wrap;
+}
+
+.attendance-control h2 {
+    color: #124b91;
+}
+
+.date-control {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.date-control input {
+    padding: 11px;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 7px;
+}
+
+/* ================================
+   SUMMARY CARDS
+================================ */
+
+.summary {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 18px;
+
+    margin-bottom: 20px;
+}
+
+.card {
+    background: white;
+
+    padding: 22px;
+
+    border-radius: 12px;
+
+    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+
+    text-align: center;
+}
+
+.card h3 {
+    color: #64748b;
+
+    font-size: 16px;
+
+    margin-bottom: 8px;
+}
+
+.card p {
+    font-size: 32px;
+
+    font-weight: bold;
+}
+
+.total p {
+    color: #1261c9;
+}
+
+.present p {
+    color: #16a34a;
+}
+
+.absent p {
+    color: #dc2626;
+}
+
+/* ================================
+   ATTENDANCE TABLE
+================================ */
+
+.table-section {
+    background: white;
+
+    padding: 20px;
+
+    border-radius: 12px;
+
+    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+}
+
+.table-section h2 {
+    color: #124b91;
+
+    margin-bottom: 15px;
+}
+
+.table-container {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 700px;
+}
+
+th {
+    background: #eaf2fc;
+
+    color: #124b91;
+
+    padding: 14px;
+
+    text-align: center;
+
+    border-bottom: 2px solid #cbd5e1;
+}
+
+td {
+    padding: 13px;
+
+    text-align: center;
+
+    border-bottom: 1px solid #e2e8f0;
+}
+
+tr:hover {
+    background: #f8fafc;
+}
+
+/* ================================
+   STATUS
+================================ */
+
+.status {
+    display: inline-block;
+
+    min-width: 95px;
+
+    padding: 7px 12px;
+
+    border-radius: 20px;
+
+    font-weight: bold;
+}
+
+.status-present {
+    background: #dcfce7;
+
+    color: #15803d;
+}
+
+.status-absent {
+    background: #fee2e2;
+
+    color: #b91c1c;
+}
+
+.status-none {
+    background: #e2e8f0;
+
+    color: #475569;
+}
+
+/* ================================
+   DELETE
+================================ */
+
+.delete-btn {
+    background: #ef4444;
+
+    color: white;
+
+    padding: 8px 12px;
+}
+
+.delete-btn:hover {
+    background: #b91c1c;
+}
+
+/* ================================
+   EMPTY MESSAGE
+================================ */
+
+.empty {
+    text-align: center;
+
+    padding: 35px;
+
+    color: #64748b;
+
+    display: none;
+}
+
+/* ================================
+   FOOTER
+================================ */
+
+footer {
+    margin-top: 30px;
+
+    background: #0d47a1;
+
+    color: white;
+
+    text-align: center;
+
+    padding: 18px;
+}
+
+footer p {
+    margin: 5px;
+}
+
+/* ================================
+   MOBILE
+================================ */
+
+@media(max-width: 700px) {
+
+    .logo-box {
+        height: 90px;
+    }
+
+    .title-section h1 {
+        font-size: 25px;
+    }
+
+    .title-section h2 {
+        font-size: 18px;
+    }
+
+    .title-section p {
+        font-size: 14px;
+    }
+
+    .summary {
+        grid-template-columns: 1fr;
+    }
+
+    .form-row {
+        flex-direction: column;
+    }
+
+    .form-row input,
+    .form-row button {
+        width: 100%;
+    }
+
+    .attendance-control {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .date-control {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .date-control button,
+    .date-control input {
+        width: 100%;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+<!-- ==================================
+     UNIVERSITY LOGO
+================================== -->
+
+<header class="university-header">
+
+    <div class="logo-box">
+
+        <img src="logo.png"
+             alt="Sharnbasva University Logo">
+
+    </div>
+
+</header>
+
+
+<!-- ==================================
+     TITLE
+================================== -->
+
+<section class="title-section">
+
+    <h1>STUDENT ATTENDANCE TRACKER</h1>
+
+    <h2>Sharnbasva University</h2>
+
+    <p>
+        Faculty of Engineering & Technology
+    </p>
+
+    <p>
+        Department of Computer Science & Engineering
+    </p>
+
+</section>
+
+
+<!-- ==================================
+     MAIN
+================================== -->
+
+<div class="container">
+
+
+<!-- ADD STUDENT -->
+
+<section class="add-section">
+
+    <h2>➕ Add Student</h2>
+
+    <div class="form-row">
+
+        <input
+            type="text"
+            id="studentName"
+            placeholder="Enter student name"
+        >
+
+        <input
+            type="text"
+            id="rollNumber"
+            placeholder="Enter roll number"
+        >
+
+        <button
+            class="add-btn"
+            onclick="addStudent()"
+        >
+            + Add Student
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- ATTENDANCE CONTROL -->
+
+<section class="attendance-control">
+
+    <h2>📅 Attendance Date</h2>
+
+    <div class="date-control">
+
+        <input
+            type="date"
+            id="attendanceDate"
+        >
+
+        <button
+            class="mark-all-btn"
+            onclick="markAllPresent()"
+        >
+            ✓ Mark All Present
+        </button>
+
+        <button
+            class="reset-btn"
+            onclick="resetAttendance()"
+        >
+            ↻ Reset
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- SUMMARY -->
+
+<section class="summary">
+
+    <div class="card total">
+
+        <h3>Total Students</h3>
+
+        <p id="totalStudents">0</p>
+
+    </div>
+
+
+    <div class="card present">
+
+        <h3>Present</h3>
+
+        <p id="presentCount">0</p>
+
+    </div>
+
+
+    <div class="card absent">
+
+        <h3>Absent</h3>
+
+        <p id="absentCount">0</p>
+
+    </div>
+
+</section>
+
+
+<!-- ATTENDANCE TABLE -->
+
+<section class="table-section">
+
+    <h2>📋 Today's Attendance</h2>
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Sr. No.</th>
+
+                    <th>Roll Number</th>
+
+                    <th>Student Name</th>
+
+                    <th>Attendance</th>
+
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="studentList"></tbody>
+
+        </table>
+
+    </div>
+
+
+    <div
+        id="emptyMessage"
+        class="empty"
+    >
+
+        <h3>No Students Added</h3>
+
+        <p>
+            Add students above to start taking attendance.
+        </p>
+
+    </div>
+
+</section>
+
+</div>
+
+
+<!-- ==================================
+     FOOTER
+================================== -->
+
+<footer>
+
+    <p>
+        <strong>Sharnbasva University, Kalaburagi</strong>
+    </p>
+
+    <p>
+        Department of Computer Science & Engineering
+    </p>
+
+    <p>
+        Student Attendance Management System
+    </p>
+
+</footer>
+
+
+<!-- ==================================
+     JAVASCRIPT
+================================== -->
+
+<script>
+
+// ======================================
+// LOAD STUDENTS
+// ======================================
+
+let students =
+    JSON.parse(localStorage.getItem("students")) || [];
+
+
+// ======================================
+// SET TODAY'S DATE
+// ======================================
+
+const dateInput =
+    document.getElementById("attendanceDate");
+
+dateInput.value =
+    new Date().toISOString().split("T")[0];
+
+
+// ======================================
+// SAVE DATA
+// ======================================
+
+function saveStudents() {
+
+    localStorage.setItem(
+        "students",
+        JSON.stringify(students)
+    );
+
+}
+
+
+// ======================================
+// ADD STUDENT
+// ======================================
+
+function addStudent() {
+
+    const name =
+        document
+        .getElementById("studentName")
+        .value
+        .trim();
+
+    const roll =
+        document
+        .getElementById("rollNumber")
+        .value
+        .trim();
+
+
+    if (name === "" || roll === "") {
+
+        alert(
+            "Please enter student name and roll number."
+        );
+
+        return;
+    }
+
+
+    // Check duplicate roll number
+
+    const duplicate =
+        students.some(
+            student =>
+            student.roll.toLowerCase() ===
+            roll.toLowerCase()
+        );
+
+
+    if (duplicate) {
+
+        alert(
+            "This roll number already exists."
+        );
+
+        return;
+    }
+
+
+    const student = {
+
+        id: Date.now(),
+
+        name: name,
+
+        roll: roll,
+
+        attendance: {}
+
+    };
+
+
+    students.push(student);
+
+    saveStudents();
+
+
+    // Clear fields
+
+    document
+        .getElementById("studentName")
+        .value = "";
+
+    document
+        .getElementById("rollNumber")
+        .value = "";
+
+
+    display
